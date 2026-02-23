@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block title %}Bookings Calendar – Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0"><i class="bi bi-calendar3 me-2"></i>{{ t('cal_admin_title') }}</h2>
+  <a href="{{ url_for('admin.bookings') }}" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-table me-1"></i>{{ t('cal_switch_table') }}
+  </a>
+</div>
+
+<!-- Legend -->
+<div class="d-flex gap-3 mb-3 flex-wrap">
+  <span class="badge fs-6 px-3 py-2" style="background:#ffc107;color:#000">
+    <i class="bi bi-circle-fill me-1"></i>{{ t('admin_status_pending') }}
+  </span>
+  <span class="badge fs-6 px-3 py-2" style="background:#198754">
+    <i class="bi bi-circle-fill me-1"></i>{{ t('admin_status_confirmed') }}
+  </span>
+  <span class="badge fs-6 px-3 py-2" style="background:#dc3545">
+    <i class="bi bi-circle-fill me-1"></i>{{ t('admin_status_cancelled') }}
+  </span>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body p-3">
+    <div id="calendar"></div>
+  </div>
+</div>
+
+<!-- Event detail modal -->
+<div class="modal fade" id="eventModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="bi bi-calendar-event me-2"></i>
+          <span id="modalTitle"></span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-0">
+        <table class="table table-sm mb-0">
+          <tbody>
+            <tr>
+              <th class="ps-3 text-muted fw-normal" style="width:35%">{{ t('cal_detail_time') }}</th>
+              <td id="modalTime" class="pe-3"></td>
+            </tr>
+            <tr>
+              <th class="ps-3 text-muted fw-normal">{{ t('cal_detail_customer') }}</th>
+              <td id="modalCustomer" class="pe-3"></td>
+            </tr>
+            <tr>
+              <th class="ps-3 text-muted fw-normal">{{ t('cal_detail_service') }}</th>
+              <td id="modalService" class="pe-3"></td>
+            </tr>
+            <tr>
+              <th class="ps-3 text-muted fw-normal">{{ t('cal_detail_staff') }}</th>
+              <td id="modalStaff" class="pe-3"></td>
+            </tr>
+            <tr>
+              <th class="ps-3 text-muted fw-normal">{{ t('cal_detail_status') }}</th>
+              <td id="modalStatus" class="pe-3"></td>
+            </tr>
+            <tr id="modalNotesRow">
+              <th class="ps-3 text-muted fw-normal">{{ t('cal_detail_notes') }}</th>
+              <td id="modalNotes" class="pe-3 text-muted"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+          {{ t('cal_close') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const isRtl  = {{ 'true' if lang == 'ar' else 'false' }};
+  const locale = '{{ lang }}';
+
+  const statusColors = {
+    pending:   '#ffc107',
+    confirmed: '#198754',
+    cancelled: '#dc3545',
+  };
+
+  const fmt = new Intl.DateTimeFormat(locale === 'ar' ? 'ar-SA' : 'en-GB', {
+    hour: '2-digit', minute: '2-digit', hour12: false,
+  });
+
+  const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+    locale:      locale,
+    direction:   isRtl ? 'rtl' : 'ltr',
+    initialView: 'dayGridMonth',
+    height:      'auto',
+    headerToolbar: {
+      left:   'prev,next today',
+      center: 'title',
+      right:  'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+    },
+    buttonText: {
+      today:    '{{ t("admin_view_all") if lang == "ar" else "today" }}',
+      month:    '{{ "شهر" if lang == "ar" else "month" }}',
+      week:     '{{ "أسبوع" if lang == "ar" else "week" }}',
+      day:      '{{ "يوم" if lang == "ar" else "day" }}',
+      list:     '{{ "قائمة" if lang == "ar" else "list" }}',
+    },
+    events: '{{ url_for("admin.calendar_events") }}',
+    eventDisplay: 'block',
+    eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
+    eventClick: function (info) {
+      const e = info.event;
+      const p = e.extendedProps;
+
+      document.getElementById('modalTitle').textContent    = e.title;
+      document.getElementById('modalTime').textContent     =
+        fmt.format(e.start) + ' – ' + fmt.format(e.end);
+      document.getElementById('modalCustomer').textContent = p.customer;
+      document.getElementById('modalService').textContent  = p.service;
+      document.getElementById('modalStaff').textContent    = p.staff;
+
+      const statusEl = document.getElementById('modalStatus');
+      statusEl.innerHTML = `<span class="badge status-badge-${p.status}">${p.status}</span>`;
+
+      const notesRow = document.getElementById('modalNotesRow');
+      document.getElementById('modalNotes').textContent = p.notes;
+      notesRow.style.display = p.notes ? '' : 'none';
+
+      new bootstrap.Modal(document.getElementById('eventModal')).show();
+    },
+  });
+
+  calendar.render();
+});
+</script>
+{% endblock %}

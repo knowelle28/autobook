@@ -1,6 +1,6 @@
 from datetime import datetime, time
 
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, jsonify
 from flask_login import login_required, current_user
 from functools import wraps
 
@@ -249,6 +249,54 @@ def hours():
         active_schedule=active_schedule,
         active_tab=active_tab,
     )
+
+
+# ── Calendar ──────────────────────────────────────────────────────────────────
+
+@bp.route('/calendar')
+@admin_required
+def calendar():
+    return render_template('admin/calendar.html')
+
+
+@bp.route('/calendar/events')
+@admin_required
+def calendar_events():
+    start_str = request.args.get('start', '')
+    end_str   = request.args.get('end', '')
+
+    query = Booking.query
+    if start_str and end_str:
+        try:
+            start_dt = datetime.fromisoformat(start_str[:19])
+            end_dt   = datetime.fromisoformat(end_str[:19])
+            query = query.filter(Booking.start_time >= start_dt,
+                                 Booking.start_time <= end_dt)
+        except ValueError:
+            pass
+
+    colors = {
+        Booking.STATUS_PENDING:   '#ffc107',
+        Booking.STATUS_CONFIRMED: '#198754',
+        Booking.STATUS_CANCELLED: '#dc3545',
+    }
+    events = []
+    for b in query.all():
+        events.append({
+            'id':    b.id,
+            'title': f'{b.service.name} · {b.user.name}',
+            'start': b.start_time.isoformat(),
+            'end':   b.end_time.isoformat(),
+            'color': colors.get(b.status, '#6c757d'),
+            'extendedProps': {
+                'status':   b.status,
+                'customer': b.user.name,
+                'service':  b.service.name,
+                'staff':    b.staff.name,
+                'notes':    b.notes or '',
+            },
+        })
+    return jsonify(events)
 
 
 @bp.route('/hours/set-active', methods=['POST'])

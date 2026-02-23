@@ -42,12 +42,16 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('booking.my_bookings') }}">{{ t('nav_my_bookings') }}</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('booking.calendar') }}">{{ t('nav_my_calendar') }}</a>
+          </li>
           {% if current_user.is_admin %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">{{ t('nav_admin') }}</a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ url_for('admin.dashboard') }}">{{ t('nav_dashboard') }}</a></li>
               <li><a class="dropdown-item" href="{{ url_for('admin.bookings') }}">{{ t('nav_all_bookings') }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('admin.calendar') }}">{{ t('nav_calendar') }}</a></li>
               <li><a class="dropdown-item" href="{{ url_for('admin.services') }}">{{ t('nav_services') }}</a></li>
               <li><a class="dropdown-item" href="{{ url_for('admin.staff') }}">{{ t('nav_staff') }}</a></li>
               <li><a class="dropdown-item" href="{{ url_for('admin.hours') }}">{{ t('nav_business_hours') }}</a></li>
