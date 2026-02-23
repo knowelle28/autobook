@@ -13,12 +13,14 @@
           <div class="mb-3">
             <label class="form-label" for="name">{{ t('register_name') }}</label>
             <input type="text" class="form-control" id="name" name="name"
-                   required autofocus placeholder="Jane Smith">
+                   required autofocus placeholder="Jane Smith"
+                   value="{{ form_data.name if form_data else '' }}">
           </div>
           <div class="mb-3">
             <label class="form-label" for="email">{{ t('register_email') }}</label>
             <input type="email" class="form-control" id="email" name="email"
-                   required placeholder="you@example.com">
+                   required placeholder="you@example.com"
+                   value="{{ form_data.email if form_data else '' }}">
           </div>
           <div class="mb-3">
             <label class="form-label" for="password">{{ t('register_password') }} <small class="text-muted">({{ t('register_min_chars') }})</small></label>

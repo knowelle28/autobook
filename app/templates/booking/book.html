@@ -15,11 +15,12 @@
           <div class="mb-3">
             <label class="form-label fw-semibold" for="service_id">{{ t('book_service_label') }}</label>
             <select class="form-select" id="service_id" name="service_id" required>
-              <option value="" disabled selected>{{ t('book_service_placeholder') }}</option>
+              <option value="" disabled {% if not form_data or not form_data.service_id %}selected{% endif %}>{{ t('book_service_placeholder') }}</option>
               {% for service in services %}
               <option value="{{ service.id }}"
                 data-duration="{{ service.duration_minutes }}"
-                data-price="{{ '%.2f' | format(service.price) }}">
+                data-price="{{ '%.2f' | format(service.price) }}"
+                {% if form_data and form_data.service_id == service.id %}selected{% endif %}>
                 {{ service.name }} — {{ service.duration_minutes }} {{ t('min') }} — ${{ '%.2f' | format(service.price) }}
               </option>
               {% endfor %}
@@ -30,9 +31,10 @@
           <div class="mb-3">
             <label class="form-label fw-semibold" for="staff_id">{{ t('book_staff_label') }}</label>
             <select class="form-select" id="staff_id" name="staff_id" required>
-              <option value="" disabled selected>{{ t('book_staff_placeholder') }}</option>
+              <option value="" disabled {% if not form_data or not form_data.staff_id %}selected{% endif %}>{{ t('book_staff_placeholder') }}</option>
               {% for member in staff_list %}
-              <option value="{{ member.id }}">
+              <option value="{{ member.id }}"
+                {% if form_data and form_data.staff_id == member.id %}selected{% endif %}>
                 {{ member.name }}{% if member.specialty %} – {{ member.specialty }}{% endif %}
               </option>
               {% endfor %}
@@ -42,7 +44,8 @@
           <!-- Date & Time -->
           <div class="mb-3">
             <label class="form-label fw-semibold" for="start_time">{{ t('book_datetime_label') }}</label>
-            <input type="datetime-local" class="form-control" id="start_time" name="start_time" required>
+            <input type="datetime-local" class="form-control" id="start_time" name="start_time" required
+                   value="{{ form_data.start_time if form_data else '' }}">
             <div class="form-text">{{ t('book_hours_hint') }}</div>
           </div>
 
@@ -50,7 +53,7 @@
           <div class="mb-4">
             <label class="form-label fw-semibold" for="notes">{{ t('book_notes_label') }} <span class="text-muted fw-normal">({{ t('book_notes_optional') }})</span></label>
             <textarea class="form-control" id="notes" name="notes" rows="2"
-                      placeholder="{{ t('book_notes_placeholder') }}"></textarea>
+                      placeholder="{{ t('book_notes_placeholder') }}">{{ form_data.notes if form_data else '' }}</textarea>
           </div>
 
           <div class="d-grid">

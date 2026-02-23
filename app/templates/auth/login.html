@@ -13,7 +13,8 @@
           <div class="mb-3">
             <label class="form-label" for="email">{{ t('login_email') }}</label>
             <input type="email" class="form-control" id="email" name="email"
-                   required autofocus placeholder="you@example.com">
+                   required autofocus placeholder="you@example.com"
+                   value="{{ form_data.email if form_data else '' }}">
           </div>
           <div class="mb-3">
             <label class="form-label" for="password">{{ t('login_password') }}</label>
@@ -21,7 +22,8 @@
                    required placeholder="••••••">
           </div>
           <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="remember" name="remember">
+            <input type="checkbox" class="form-check-input" id="remember" name="remember"
+                   {% if form_data and form_data.remember %}checked{% endif %}>
             <label class="form-check-label" for="remember">{{ t('login_remember') }}</label>
           </div>
           <div class="d-grid">

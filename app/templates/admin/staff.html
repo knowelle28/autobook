@@ -12,15 +12,18 @@
       <input type="hidden" name="action" value="add">
       <div class="col-md-4">
         <label class="form-label">{{ t('admin_col_name') }}</label>
-        <input type="text" class="form-control" name="name" required placeholder="Jane Smith">
+        <input type="text" class="form-control" name="name" required placeholder="Jane Smith"
+               value="{{ form_data.name if form_data else '' }}">
       </div>
       <div class="col-md-4">
         <label class="form-label">{{ t('admin_col_email') }}</label>
-        <input type="email" class="form-control" name="email" required placeholder="jane@shop.com">
+        <input type="email" class="form-control" name="email" required placeholder="jane@shop.com"
+               value="{{ form_data.email if form_data else '' }}">
       </div>
       <div class="col-md-4">
         <label class="form-label">{{ t('admin_col_specialty') }}</label>
-        <input type="text" class="form-control" name="specialty" placeholder="e.g. Haircut & Color">
+        <input type="text" class="form-control" name="specialty" placeholder="e.g. Haircut & Color"
+               value="{{ form_data.specialty if form_data else '' }}">
       </div>
       <div class="col-12">
         <button type="submit" class="btn btn-success">

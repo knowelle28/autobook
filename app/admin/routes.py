@@ -118,6 +118,10 @@ def services():
 
             if not name or not duration or price is None:
                 flash('Name, duration, and price are required.', 'danger')
+                form_data = {'name': name, 'description': description,
+                             'duration_minutes': request.form.get('duration_minutes', ''),
+                             'price': request.form.get('price', '')}
+                return render_template('admin/services.html', services=Service.query.all(), form_data=form_data)
             else:
                 service = Service(name=name, description=description, duration_minutes=duration, price=price)
                 db.session.add(service)
@@ -162,8 +166,12 @@ def staff():
 
             if not name or not email:
                 flash('Name and email are required.', 'danger')
+                form_data = {'name': name, 'email': email, 'specialty': specialty}
+                return render_template('admin/staff.html', staff_list=Staff.query.all(), form_data=form_data)
             elif Staff.query.filter_by(email=email).first():
                 flash('A staff member with that email already exists.', 'danger')
+                form_data = {'name': name, 'email': email, 'specialty': specialty}
+                return render_template('admin/staff.html', staff_list=Staff.query.all(), form_data=form_data)
             else:
                 member = Staff(name=name, email=email, specialty=specialty)
                 db.session.add(member)
