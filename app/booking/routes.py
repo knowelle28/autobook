@@ -4,7 +4,7 @@ from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 
 from . import bp
-from ..models import db, Service, Staff, BusinessHours, Booking
+from ..models import db, Service, Staff, BusinessHours, Booking, AppSetting
 
 
 @bp.route('/book', methods=['GET', 'POST'])
@@ -45,9 +45,10 @@ def book():
         if start_time <= datetime.utcnow():
             return _rerender('Booking must be scheduled in the future.')
 
-        # 2. Check business hours
+        # 2. Check business hours (uses whichever schedule is currently active)
+        active_schedule = AppSetting.get('active_schedule', 'regular')
         day_of_week = start_time.weekday()  # 0=Mon, 6=Sun
-        bh = BusinessHours.query.filter_by(day_of_week=day_of_week).first()
+        bh = BusinessHours.query.filter_by(day_of_week=day_of_week, schedule_type=active_schedule).first()
         if bh is None or bh.is_closed:
             return _rerender('We are closed on that day.')
 

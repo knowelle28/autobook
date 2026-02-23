@@ -139,6 +139,11 @@ TRANSLATIONS = {
         'admin_col_open_time': 'Opening Time',
         'admin_col_close_time': 'Closing Time',
         'admin_save_hours': 'Save Hours',
+        'admin_schedule_regular': 'Regular Hours',
+        'admin_schedule_ramadan': 'Ramadan Hours',
+        'admin_active_schedule': 'Currently active',
+        'admin_switch_to_ramadan': 'Switch to Ramadan',
+        'admin_switch_to_regular': 'Switch to Regular',
         # Day names (0=Monday \u2026 6=Sunday)
         'day_0': 'Monday',
         'day_1': 'Tuesday',
@@ -290,6 +295,11 @@ TRANSLATIONS = {
         'admin_col_open_time': '\u0648\u0642\u062a \u0627\u0644\u0641\u062a\u062d',
         'admin_col_close_time': '\u0648\u0642\u062a \u0627\u0644\u0625\u063a\u0644\u0627\u0642',
         'admin_save_hours': '\u062d\u0641\u0638 \u0633\u0627\u0639\u0627\u062a \u0627\u0644\u0639\u0645\u0644',
+        'admin_schedule_regular': '\u0627\u0644\u0645\u0648\u0627\u0639\u064a\u062f \u0627\u0644\u0639\u0627\u062f\u064a\u0629',
+        'admin_schedule_ramadan': '\u0645\u0648\u0627\u0639\u064a\u062f \u0631\u0645\u0636\u0627\u0646',
+        'admin_active_schedule': '\u0627\u0644\u062c\u062f\u0648\u0644 \u0627\u0644\u0646\u0634\u0637',
+        'admin_switch_to_ramadan': '\u062a\u0641\u0639\u064a\u0644 \u0645\u0648\u0627\u0639\u064a\u062f \u0631\u0645\u0636\u0627\u0646',
+        'admin_switch_to_regular': '\u062a\u0641\u0639\u064a\u0644 \u0627\u0644\u0645\u0648\u0627\u0639\u064a\u062f \u0627\u0644\u0639\u0627\u062f\u064a\u0629',
         # Day names
         'day_0': '\u0627\u0644\u0627\u062b\u0646\u064a\u0646',
         'day_1': '\u0627\u0644\u062b\u0644\u0627\u062b\u0627\u0621',

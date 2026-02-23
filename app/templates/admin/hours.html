@@ -4,9 +4,55 @@
 {% block content %}
 <h2 class="mb-4"><i class="bi bi-clock me-2"></i>{{ t('admin_hours_title') }}</h2>
 
-<div class="card shadow-sm">
+<!-- Active schedule banner -->
+<div class="card mb-4 shadow-sm border-{{ 'warning' if active_schedule == 'ramadan' else 'primary' }}">
+  <div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+      <i class="bi bi-{{ 'moon-stars' if active_schedule == 'ramadan' else 'sun' }} me-2
+         text-{{ 'warning' if active_schedule == 'ramadan' else 'primary' }}"></i>
+      <strong>{{ t('admin_active_schedule') }}:</strong>
+      <span class="badge ms-2
+        {% if active_schedule == 'ramadan' %}bg-warning text-dark{% else %}bg-primary{% endif %}">
+        {{ t('admin_schedule_ramadan') if active_schedule == 'ramadan' else t('admin_schedule_regular') }}
+      </span>
+    </div>
+    <form method="POST" action="{{ url_for('admin.set_active_schedule') }}">
+      {% if active_schedule == 'regular' %}
+        <input type="hidden" name="schedule" value="ramadan">
+        <button class="btn btn-warning btn-sm">
+          <i class="bi bi-moon-stars me-1"></i>{{ t('admin_switch_to_ramadan') }}
+        </button>
+      {% else %}
+        <input type="hidden" name="schedule" value="regular">
+        <button class="btn btn-primary btn-sm">
+          <i class="bi bi-sun me-1"></i>{{ t('admin_switch_to_regular') }}
+        </button>
+      {% endif %}
+    </form>
+  </div>
+</div>
+
+<!-- Schedule tabs -->
+<ul class="nav nav-tabs mb-0">
+  <li class="nav-item">
+    <a class="nav-link {{ 'active' if active_tab == 'regular' else '' }}"
+       href="{{ url_for('admin.hours', tab='regular') }}">
+      <i class="bi bi-sun me-1"></i>{{ t('admin_schedule_regular') }}
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {{ 'active' if active_tab == 'ramadan' else '' }}"
+       href="{{ url_for('admin.hours', tab='ramadan') }}">
+      <i class="bi bi-moon-stars me-1"></i>{{ t('admin_schedule_ramadan') }}
+    </a>
+  </li>
+</ul>
+
+<div class="card shadow-sm" style="border-top-left-radius:0">
   <div class="card-body">
+    {% set hours_list = regular_list if active_tab == 'regular' else ramadan_list %}
     <form method="POST" action="{{ url_for('admin.hours') }}">
+      <input type="hidden" name="schedule_type" value="{{ active_tab }}">
       <div class="table-responsive">
         <table class="table align-middle mb-4">
           <thead class="table-dark">
@@ -25,7 +71,7 @@
               <td class="text-center">
                 <input type="checkbox" class="form-check-input closed-cb"
                        name="closed_{{ day }}"
-                       id="closed_{{ day }}"
+                       id="closed_{{ active_tab }}_{{ day }}"
                        data-day="{{ day }}"
                        {% if bh and bh.is_closed %}checked{% endif %}>
               </td>
@@ -48,6 +94,7 @@
       </div>
       <button type="submit" class="btn btn-primary">
         <i class="bi bi-save me-1"></i>{{ t('admin_save_hours') }}
+        — {{ t('admin_schedule_ramadan') if active_tab == 'ramadan' else t('admin_schedule_regular') }}
       </button>
     </form>
   </div>

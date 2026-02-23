@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 from functools import wraps
 
 from . import bp
-from ..models import db, User, Service, Staff, BusinessHours, Booking
+from ..models import db, User, Service, Staff, BusinessHours, Booking, AppSetting
 
 
 def admin_required(f):
@@ -208,10 +208,14 @@ def hours():
     DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
     if request.method == 'POST':
+        schedule_type = request.form.get('schedule_type', 'regular')
+        if schedule_type not in ('regular', 'ramadan'):
+            schedule_type = 'regular'
+
         for day in range(7):
-            bh = BusinessHours.query.filter_by(day_of_week=day).first()
+            bh = BusinessHours.query.filter_by(day_of_week=day, schedule_type=schedule_type).first()
             if bh is None:
-                bh = BusinessHours(day_of_week=day)
+                bh = BusinessHours(day_of_week=day, schedule_type=schedule_type)
                 db.session.add(bh)
 
             is_closed = bool(request.form.get(f'closed_{day}'))
@@ -228,12 +232,30 @@ def hours():
 
         db.session.commit()
         flash('Business hours updated.', 'success')
-        return redirect(url_for('admin.hours'))
+        return redirect(url_for('admin.hours', tab=schedule_type))
 
-    all_hours = {bh.day_of_week: bh for bh in BusinessHours.query.all()}
-    # Build list in order Mon–Sun
-    hours_list = []
-    for day in range(7):
-        hours_list.append(all_hours.get(day))
+    active_schedule = AppSetting.get('active_schedule', 'regular')
+    active_tab = request.args.get('tab', 'regular')
+    if active_tab not in ('regular', 'ramadan'):
+        active_tab = 'regular'
 
-    return render_template('admin/hours.html', hours_list=hours_list)
+    regular_map = {bh.day_of_week: bh for bh in BusinessHours.query.filter_by(schedule_type='regular').all()}
+    ramadan_map = {bh.day_of_week: bh for bh in BusinessHours.query.filter_by(schedule_type='ramadan').all()}
+
+    return render_template(
+        'admin/hours.html',
+        regular_list=[regular_map.get(d) for d in range(7)],
+        ramadan_list=[ramadan_map.get(d) for d in range(7)],
+        active_schedule=active_schedule,
+        active_tab=active_tab,
+    )
+
+
+@bp.route('/hours/set-active', methods=['POST'])
+@admin_required
+def set_active_schedule():
+    schedule = request.form.get('schedule', 'regular')
+    if schedule in ('regular', 'ramadan'):
+        AppSetting.set('active_schedule', schedule)
+        flash('Active schedule switched.', 'success')
+    return redirect(url_for('admin.hours', tab=schedule))
