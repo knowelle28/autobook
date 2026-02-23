@@ -14,7 +14,7 @@ TRANSLATIONS = {
         'nav_login': 'Login',
         'nav_register': 'Register',
         # Footer
-        'footer_copy': '\u00a9 2026 BookEasy. All rights reserved.',
+        'footer_copy': '\u00a9 2026 AutoBook. All rights reserved.',
         # Auth \u2013 Login
         'login_title': 'Login',
         'login_email': 'Email address',
@@ -34,7 +34,7 @@ TRANSLATIONS = {
         'register_have_account': 'Already have an account?',
         'register_login_link': 'Login here',
         # Index
-        'index_hero_title': 'Welcome to BookEasy',
+        'index_hero_title': 'Welcome to AutoBook',
         'index_hero_subtitle': 'Premium services at your fingertips. Book in seconds, skip the wait.',
         'index_book_service': 'Book a Service',
         'index_get_started': 'Get Started',
@@ -184,7 +184,7 @@ TRANSLATIONS = {
         'nav_login': '\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644',
         'nav_register': '\u0625\u0646\u0634\u0627\u0621 \u062d\u0633\u0627\u0628',
         # Footer
-        'footer_copy': '\u00a9 2026 BookEasy. \u062c\u0645\u064a\u0639 \u0627\u0644\u062d\u0642\u0648\u0642 \u0645\u062d\u0641\u0648\u0638\u0629.',
+        'footer_copy': '\u00a9 2026 AutoBook. \u062c\u0645\u064a\u0639 \u0627\u0644\u062d\u0642\u0648\u0642 \u0645\u062d\u0641\u0648\u0638\u0629.',
         # Auth \u2013 Login
         'login_title': '\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644',
         'login_email': '\u0627\u0644\u0628\u0631\u064a\u062f \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a',
@@ -204,7 +204,7 @@ TRANSLATIONS = {
         'register_have_account': '\u0644\u062f\u064a\u0643 \u062d\u0633\u0627\u0628 \u0628\u0627\u0644\u0641\u0639\u0644\u061f',
         'register_login_link': '\u0633\u062c\u0651\u0644 \u062f\u062e\u0648\u0644\u0643 \u0647\u0646\u0627',
         # Index
-        'index_hero_title': '\u0645\u0631\u062d\u0628\u064b\u0627 \u0628\u0643 \u0641\u064a BookEasy',
+        'index_hero_title': '\u0645\u0631\u062d\u0628\u064b\u0627 \u0628\u0643 \u0641\u064a AutoBook',
         'index_hero_subtitle': '\u062e\u062f\u0645\u0627\u062a \u0645\u062a\u0645\u064a\u0632\u0629 \u0641\u064a \u0645\u062a\u0646\u0627\u0648\u0644 \u064a\u062f\u0643. \u0627\u062d\u062c\u0632 \u0641\u064a \u062b\u0648\u0627\u0646\u064d\u060c \u0648\u062a\u062c\u0646\u0651\u0628 \u0627\u0644\u0627\u0646\u062a\u0638\u0627\u0631.',
         'index_book_service': '\u0627\u062d\u062c\u0632 \u062e\u062f\u0645\u0629',
         'index_get_started': '\u0627\u0628\u062f\u0623 \u0627\u0644\u0622\u0646',
