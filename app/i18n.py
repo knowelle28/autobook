@@ -166,6 +166,16 @@ TRANSLATIONS = {
         'cal_detail_status': 'Status',
         'cal_detail_notes': 'Notes',
         'cal_close': 'Close',
+        # Admin – Users
+        'nav_users': 'Users',
+        'admin_users_title': 'Manage Users',
+        'admin_add_user': 'Add New User',
+        'admin_col_user': 'Name',
+        'admin_col_admin': 'Admin?',
+        'admin_add_user_btn': 'Add User',
+        'admin_no_users': 'No users found.',
+        'admin_delete_user_confirm': 'Delete this user?',
+        'admin_is_admin': 'Admin',
         # Change Password
         'nav_change_password': 'Change Password',
         'chpwd_title': 'Change Password',
@@ -343,6 +353,16 @@ TRANSLATIONS = {
         'cal_detail_status': '\u0627\u0644\u062d\u0627\u0644\u0629',
         'cal_detail_notes': '\u0645\u0644\u0627\u062d\u0638\u0627\u062a',
         'cal_close': '\u0625\u063a\u0644\u0627\u0642',
+        # Admin – Users
+        'nav_users': '\u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646',
+        'admin_users_title': '\u0625\u062f\u0627\u0631\u0629 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u064a\u0646',
+        'admin_add_user': '\u0625\u0636\u0627\u0641\u0629 \u0645\u0633\u062a\u062e\u062f\u0645 \u062c\u062f\u064a\u062f',
+        'admin_col_user': '\u0627\u0644\u0627\u0633\u0645',
+        'admin_col_admin': '\u0645\u0634\u0631\u0641\u061f',
+        'admin_add_user_btn': '\u0625\u0636\u0627\u0641\u0629 \u0645\u0633\u062a\u062e\u062f\u0645',
+        'admin_no_users': '\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646.',
+        'admin_delete_user_confirm': '\u062d\u0630\u0641 \u0647\u0630\u0627 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u061f',
+        'admin_is_admin': '\u0645\u0634\u0631\u0641',
         # Change Password
         'nav_change_password': '\u062a\u063a\u064a\u064a\u0631 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631',
         'chpwd_title': '\u062a\u063a\u064a\u064a\u0631 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631',

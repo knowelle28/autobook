@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Manage Users – AutoBook{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-people me-2"></i>{{ t('admin_users_title') }}</h2>
+
+<!-- Add user form -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header fw-semibold">{{ t('admin_add_user') }}</div>
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('admin.users') }}" class="row g-3">
+      <input type="hidden" name="action" value="add">
+      <div class="col-md-3">
+        <input type="text" class="form-control" name="name" placeholder="{{ t('admin_col_user') }}" required>
+      </div>
+      <div class="col-md-3">
+        <input type="email" class="form-control" name="email" placeholder="{{ t('admin_col_email') }}" required>
+      </div>
+      <div class="col-md-3">
+        <input type="password" class="form-control" name="password" placeholder="{{ t('register_password') }}" required minlength="6">
+      </div>
+      <div class="col-md-1 d-flex align-items-center gap-2">
+        <input class="form-check-input" type="checkbox" name="is_admin" id="is_admin_check">
+        <label class="form-check-label" for="is_admin_check">{{ t('admin_is_admin') }}</label>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">{{ t('admin_add_user_btn') }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Users table -->
+{% if users %}
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>{{ t('admin_col_id') }}</th>
+        <th>{{ t('admin_col_user') }}</th>
+        <th>{{ t('admin_col_email') }}</th>
+        <th>{{ t('admin_col_admin') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td class="text-muted">#{{ user.id }}</td>
+        <td class="fw-semibold">{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          {% if user.is_admin %}
+          <span class="badge bg-primary">{{ t('admin_is_admin') }}</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if user.id != current_user.id %}
+          <form method="POST" action="{{ url_for('admin.users') }}"
+                onsubmit="return confirm('{{ t('admin_delete_user_confirm') }}')">
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="user_id" value="{{ user.id }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger">{{ t('admin_delete') }}</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="alert alert-light border">{{ t('admin_no_users') }}</div>
+{% endif %}
+{% endblock %}

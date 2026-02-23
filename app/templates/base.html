@@ -55,6 +55,7 @@
               <li><a class="dropdown-item" href="{{ url_for('admin.services') }}">{{ t('nav_services') }}</a></li>
               <li><a class="dropdown-item" href="{{ url_for('admin.staff') }}">{{ t('nav_staff') }}</a></li>
               <li><a class="dropdown-item" href="{{ url_for('admin.hours') }}">{{ t('nav_business_hours') }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('admin.users') }}">{{ t('nav_users') }}</a></li>
             </ul>
           </li>
           {% endif %}
@@ -79,9 +80,6 @@
           {% else %}
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('auth.login') }}">{{ t('nav_login') }}</a>
-          </li>
-          <li class="nav-item">
-            <a class="btn btn-primary btn-sm ms-2" href="{{ url_for('auth.register') }}">{{ t('nav_register') }}</a>
           </li>
           {% endif %}
           <li class="nav-item d-flex align-items-center ms-2">

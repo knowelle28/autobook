@@ -28,44 +28,10 @@ def login():
     return render_template('auth/login.html')
 
 
-@bp.route('/register', methods=['GET', 'POST'])
+@bp.route('/register')
 def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
-
-    if request.method == 'POST':
-        name = request.form.get('name', '').strip()
-        email = request.form.get('email', '').strip().lower()
-        password = request.form.get('password', '')
-        confirm = request.form.get('confirm_password', '')
-
-        error = None
-        if not name:
-            error = 'Name is required.'
-        elif not email:
-            error = 'Email is required.'
-        elif not password:
-            error = 'Password is required.'
-        elif len(password) < 6:
-            error = 'Password must be at least 6 characters.'
-        elif password != confirm:
-            error = 'Passwords do not match.'
-        elif User.query.filter_by(email=email).first():
-            error = 'An account with that email already exists.'
-
-        if error:
-            flash(error, 'danger')
-            return render_template('auth/register.html', form_data={'name': name, 'email': email})
-        else:
-            user = User(name=name, email=email)
-            user.set_password(password)
-            db.session.add(user)
-            db.session.commit()
-            login_user(user)
-            flash('Account created! Welcome, {}!'.format(user.name), 'success')
-            return redirect(url_for('main.index'))
-
-    return render_template('auth/register.html')
+    flash('Registration is not available. Please contact an administrator.', 'info')
+    return redirect(url_for('auth.login'))
 
 
 @bp.route('/change-password', methods=['GET', 'POST'])

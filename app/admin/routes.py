@@ -307,3 +307,46 @@ def set_active_schedule():
         AppSetting.set('active_schedule', schedule)
         flash('Active schedule switched.', 'success')
     return redirect(url_for('admin.hours', tab=schedule))
+
+
+# ── Users ─────────────────────────────────────────────────────────────────────
+
+@bp.route('/users', methods=['GET', 'POST'])
+@admin_required
+def users():
+    if request.method == 'POST':
+        action = request.form.get('action')
+
+        if action == 'add':
+            name = request.form.get('name', '').strip()
+            email = request.form.get('email', '').strip().lower()
+            password = request.form.get('password', '')
+            is_admin = bool(request.form.get('is_admin'))
+
+            if not name or not email or not password:
+                flash('Name, email, and password are required.', 'danger')
+            elif len(password) < 6:
+                flash('Password must be at least 6 characters.', 'danger')
+            elif User.query.filter_by(email=email).first():
+                flash('A user with that email already exists.', 'danger')
+            else:
+                user = User(name=name, email=email, is_admin=is_admin)
+                user.set_password(password)
+                db.session.add(user)
+                db.session.commit()
+                flash('User "{}" created.'.format(name), 'success')
+
+        elif action == 'delete':
+            user_id = request.form.get('user_id', type=int)
+            user = User.query.get_or_404(user_id)
+            if user.id == current_user.id:
+                flash('You cannot delete your own account.', 'danger')
+            else:
+                db.session.delete(user)
+                db.session.commit()
+                flash('User deleted.', 'info')
+
+        return redirect(url_for('admin.users'))
+
+    all_users = User.query.order_by(User.name).all()
+    return render_template('admin/users.html', users=all_users)
