@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Book a Service – BookEasy{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h3 class="card-title mb-4">
+          <i class="bi bi-calendar-plus me-2"></i>{{ t('book_title') }}
+        </h3>
+
+        <form method="POST" action="{{ url_for('booking.book') }}">
+          <!-- Service -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="service_id">{{ t('book_service_label') }}</label>
+            <select class="form-select" id="service_id" name="service_id" required>
+              <option value="" disabled selected>{{ t('book_service_placeholder') }}</option>
+              {% for service in services %}
+              <option value="{{ service.id }}"
+                data-duration="{{ service.duration_minutes }}"
+                data-price="{{ '%.2f' | format(service.price) }}">
+                {{ service.name }} — {{ service.duration_minutes }} {{ t('min') }} — ${{ '%.2f' | format(service.price) }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Staff -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="staff_id">{{ t('book_staff_label') }}</label>
+            <select class="form-select" id="staff_id" name="staff_id" required>
+              <option value="" disabled selected>{{ t('book_staff_placeholder') }}</option>
+              {% for member in staff_list %}
+              <option value="{{ member.id }}">
+                {{ member.name }}{% if member.specialty %} – {{ member.specialty }}{% endif %}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Date & Time -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="start_time">{{ t('book_datetime_label') }}</label>
+            <input type="datetime-local" class="form-control" id="start_time" name="start_time" required>
+            <div class="form-text">{{ t('book_hours_hint') }}</div>
+          </div>
+
+          <!-- Notes -->
+          <div class="mb-4">
+            <label class="form-label fw-semibold" for="notes">{{ t('book_notes_label') }} <span class="text-muted fw-normal">({{ t('book_notes_optional') }})</span></label>
+            <textarea class="form-control" id="notes" name="notes" rows="2"
+                      placeholder="{{ t('book_notes_placeholder') }}"></textarea>
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="bi bi-check-circle me-1"></i>{{ t('book_submit') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Set minimum date/time to now
+  const input = document.getElementById('start_time');
+  const now = new Date();
+  now.setMinutes(now.getMinutes() + 5);
+  const pad = n => String(n).padStart(2, '0');
+  input.min = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+</script>
+{% endblock %}

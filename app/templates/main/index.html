@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}BookEasy – Online Booking{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<div class="p-5 mb-4 bg-dark text-white rounded-3">
+  <div class="container-fluid py-2">
+    <h1 class="display-5 fw-bold"><i class="bi bi-scissors me-2"></i>{{ t('index_hero_title') }}</h1>
+    <p class="col-md-8 fs-4">{{ t('index_hero_subtitle') }}</p>
+    {% if current_user.is_authenticated %}
+    <a class="btn btn-primary btn-lg" href="{{ url_for('booking.book') }}">
+      <i class="bi bi-calendar-plus me-1"></i>{{ t('index_book_service') }}
+    </a>
+    {% else %}
+    <a class="btn btn-primary btn-lg me-2" href="{{ url_for('auth.register') }}">{{ t('index_get_started') }}</a>
+    <a class="btn btn-outline-light btn-lg" href="{{ url_for('auth.login') }}">{{ t('nav_login') }}</a>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Services preview -->
+<h2 class="mb-3">{{ t('index_our_services') }}</h2>
+{% if services %}
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+  {% for service in services %}
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">{{ service.name }}</h5>
+        <p class="card-text text-muted">{{ service.description or t('index_no_desc') }}</p>
+      </div>
+      <div class="card-footer d-flex justify-content-between align-items-center">
+        <span class="badge bg-secondary">
+          <i class="bi bi-clock me-1"></i>{{ service.duration_minutes }} {{ t('min') }}
+        </span>
+        <span class="fw-bold text-success">${{ '%.2f' | format(service.price) }}</span>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<div class="text-center">
+  <a href="{{ url_for('main.services') }}" class="btn btn-outline-secondary">{{ t('index_view_catalog') }}</a>
+</div>
+{% else %}
+<div class="alert alert-info">{{ t('index_no_services') }}</div>
+{% endif %}
+{% endblock %}

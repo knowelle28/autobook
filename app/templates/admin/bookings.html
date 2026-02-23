@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}All Bookings – Admin{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-calendar2-week me-2"></i>{{ t('admin_bookings_title') }}</h2>
+
+<!-- Filters -->
+<form method="GET" class="row g-2 mb-4 align-items-end">
+  <div class="col-md-3">
+    <label class="form-label">{{ t('admin_filter_date') }}</label>
+    <input type="date" class="form-control" name="date" value="{{ filter_date }}">
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">{{ t('admin_filter_staff') }}</label>
+    <select class="form-select" name="staff_id">
+      <option value="">{{ t('admin_all_staff') }}</option>
+      {% for member in staff_list %}
+      <option value="{{ member.id }}" {% if filter_staff == member.id %}selected{% endif %}>
+        {{ member.name }}
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">{{ t('admin_filter_status') }}</label>
+    <select class="form-select" name="status">
+      <option value="">{{ t('admin_all_statuses') }}</option>
+      <option value="pending"   {% if filter_status == 'pending' %}selected{% endif %}>{{ t('admin_status_pending') }}</option>
+      <option value="confirmed" {% if filter_status == 'confirmed' %}selected{% endif %}>{{ t('admin_status_confirmed') }}</option>
+      <option value="cancelled" {% if filter_status == 'cancelled' %}selected{% endif %}>{{ t('admin_status_cancelled') }}</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <button type="submit" class="btn btn-primary w-100">{{ t('admin_filter_btn') }}</button>
+  </div>
+</form>
+
+{% if bookings %}
+<div class="table-responsive">
+  <table class="table table-striped table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>{{ t('admin_col_id') }}</th>
+        <th>{{ t('admin_col_customer') }}</th>
+        <th>{{ t('admin_col_service') }}</th>
+        <th>{{ t('admin_col_staff') }}</th>
+        <th>{{ t('admin_col_datetime') }}</th>
+        <th>{{ t('admin_col_status') }}</th>
+        <th>{{ t('admin_col_notes') }}</th>
+        <th>{{ t('admin_col_action') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in bookings %}
+      <tr>
+        <td>#{{ b.id }}</td>
+        <td>{{ b.user.name }}<br><small class="text-muted">{{ b.user.email }}</small></td>
+        <td>{{ b.service.name }}</td>
+        <td>{{ b.staff.name }}</td>
+        <td>{{ b.start_time.strftime('%b %d %Y, %H:%M') }}</td>
+        <td>
+          <span class="badge status-badge-{{ b.status }}">{{ b.status.capitalize() }}</span>
+        </td>
+        <td class="text-muted">{{ b.notes or '—' }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('admin.update_booking_status', booking_id=b.id) }}"
+                class="d-flex gap-1">
+            <select name="status" class="form-select form-select-sm" style="min-width:120px">
+              <option value="pending"   {% if b.status=='pending' %}selected{% endif %}>{{ t('admin_status_pending') }}</option>
+              <option value="confirmed" {% if b.status=='confirmed' %}selected{% endif %}>{{ t('admin_status_confirmed') }}</option>
+              <option value="cancelled" {% if b.status=='cancelled' %}selected{% endif %}>{{ t('admin_status_cancelled') }}</option>
+            </select>
+            <button type="submit" class="btn btn-sm btn-outline-primary">{{ t('admin_save') }}</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<p class="text-muted">{{ t('admin_showing') }} {{ bookings|length }} {{ t('admin_bookings_label') }}.</p>
+{% else %}
+<div class="alert alert-light border">{{ t('admin_no_bookings_filter') }}</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}My Bookings – BookEasy{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0"><i class="bi bi-journal-check me-2"></i>{{ t('mybookings_title') }}</h2>
+  <a href="{{ url_for('booking.book') }}" class="btn btn-primary">
+    <i class="bi bi-plus-circle me-1"></i>{{ t('mybookings_new') }}
+  </a>
+</div>
+
+{% if bookings %}
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>{{ t('mybookings_col_id') }}</th>
+        <th>{{ t('mybookings_col_service') }}</th>
+        <th>{{ t('mybookings_col_staff') }}</th>
+        <th>{{ t('mybookings_col_datetime') }}</th>
+        <th>{{ t('mybookings_col_duration') }}</th>
+        <th>{{ t('mybookings_col_status') }}</th>
+        <th>{{ t('mybookings_col_notes') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in bookings %}
+      <tr>
+        <td class="text-muted">#{{ b.id }}</td>
+        <td class="fw-semibold">{{ b.service.name }}</td>
+        <td>{{ b.staff.name }}</td>
+        <td>{{ b.start_time.strftime('%b %d, %Y %H:%M') }}</td>
+        <td><span class="badge bg-secondary">{{ b.service.duration_minutes }} {{ t('min') }}</span></td>
+        <td>
+          <span class="badge status-badge-{{ b.status }}">{{ b.status.capitalize() }}</span>
+        </td>
+        <td class="text-muted">{{ b.notes or '—' }}</td>
+        <td>
+          {% if b.status != 'cancelled' and b.start_time > now %}
+          <form method="POST" action="{{ url_for('booking.cancel', booking_id=b.id) }}"
+                onsubmit="return confirm('{{ t('mybookings_cancel_confirm') }}')">
+            <button type="submit" class="btn btn-sm btn-outline-danger">{{ t('mybookings_cancel') }}</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+  {{ t('mybookings_none') }}
+  <a href="{{ url_for('booking.book') }}">{{ t('mybookings_book_first') }}</a>
+</div>
+{% endif %}
+{% endblock %}

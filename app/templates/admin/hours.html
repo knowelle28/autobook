@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Business Hours – Admin{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-clock me-2"></i>{{ t('admin_hours_title') }}</h2>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('admin.hours') }}">
+      <div class="table-responsive">
+        <table class="table align-middle mb-4">
+          <thead class="table-dark">
+            <tr>
+              <th>{{ t('admin_col_day') }}</th>
+              <th class="text-center">{{ t('admin_col_closed') }}</th>
+              <th>{{ t('admin_col_open_time') }}</th>
+              <th>{{ t('admin_col_close_time') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for day in range(7) %}
+            {% set bh = hours_list[day] %}
+            <tr>
+              <td class="fw-semibold">{{ t('day_' ~ day) }}</td>
+              <td class="text-center">
+                <input type="checkbox" class="form-check-input closed-cb"
+                       name="closed_{{ day }}"
+                       id="closed_{{ day }}"
+                       data-day="{{ day }}"
+                       {% if bh and bh.is_closed %}checked{% endif %}>
+              </td>
+              <td>
+                <input type="time" class="form-control time-input-{{ day }}"
+                       name="open_{{ day }}"
+                       value="{{ bh.open_time.strftime('%H:%M') if bh and bh.open_time else '09:00' }}"
+                       {% if bh and bh.is_closed %}disabled{% endif %}>
+              </td>
+              <td>
+                <input type="time" class="form-control time-input-{{ day }}"
+                       name="close_{{ day }}"
+                       value="{{ bh.close_time.strftime('%H:%M') if bh and bh.close_time else '18:00' }}"
+                       {% if bh and bh.is_closed %}disabled{% endif %}>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-save me-1"></i>{{ t('admin_save_hours') }}
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.querySelectorAll('.closed-cb').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const day = cb.dataset.day;
+      document.querySelectorAll(`.time-input-${day}`).forEach(input => {
+        input.disabled = cb.checked;
+      });
+    });
+  });
+</script>
+{% endblock %}

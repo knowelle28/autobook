@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Register – BookEasy{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h3 class="card-title mb-4 text-center">
+          <i class="bi bi-person-plus-fill me-2"></i>{{ t('register_title') }}
+        </h3>
+        <form method="POST" action="{{ url_for('auth.register') }}">
+          <div class="mb-3">
+            <label class="form-label" for="name">{{ t('register_name') }}</label>
+            <input type="text" class="form-control" id="name" name="name"
+                   required autofocus placeholder="Jane Smith">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="email">{{ t('register_email') }}</label>
+            <input type="email" class="form-control" id="email" name="email"
+                   required placeholder="you@example.com">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="password">{{ t('register_password') }} <small class="text-muted">({{ t('register_min_chars') }})</small></label>
+            <input type="password" class="form-control" id="password" name="password"
+                   required minlength="6" placeholder="••••••">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="confirm_password">{{ t('register_confirm') }}</label>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                   required placeholder="••••••">
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-success">{{ t('register_submit') }}</button>
+          </div>
+        </form>
+        <hr>
+        <p class="text-center mb-0">
+          {{ t('register_have_account') }} <a href="{{ url_for('auth.login') }}">{{ t('register_login_link') }}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
