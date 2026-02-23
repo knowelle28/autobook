@@ -90,7 +90,9 @@ def book():
         flash('Booking confirmed for {} on {}!'.format(service.name, start_time.strftime('%b %d at %H:%M')), 'success')
         return redirect(url_for('booking.my_bookings'))
 
-    return render_template('booking/book.html', services=services, staff_list=staff_list)
+    preselect_id = request.args.get('service_id', type=int)
+    form_data = {'service_id': preselect_id} if preselect_id else None
+    return render_template('booking/book.html', services=services, staff_list=staff_list, form_data=form_data)
 
 
 @bp.route('/my-bookings')

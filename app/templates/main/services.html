@@ -34,7 +34,7 @@
         <td class="text-end fw-bold text-success">${{ '%.2f' | format(service.price) }}</td>
         <td class="text-end">
           {% if current_user.is_authenticated %}
-          <a href="{{ url_for('booking.book') }}" class="btn btn-sm btn-outline-primary">{{ t('services_book') }}</a>
+          <a href="{{ url_for('booking.book', service_id=service.id) }}" class="btn btn-sm btn-outline-primary">{{ t('services_book') }}</a>
           {% else %}
           <a href="{{ url_for('auth.login') }}" class="btn btn-sm btn-outline-secondary">{{ t('services_login_to_book') }}</a>
           {% endif %}
