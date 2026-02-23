@@ -68,6 +68,29 @@ def register():
     return render_template('auth/register.html')
 
 
+@bp.route('/change-password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    if request.method == 'POST':
+        current = request.form.get('current_password', '')
+        new = request.form.get('new_password', '')
+        confirm = request.form.get('confirm_password', '')
+
+        if not current_user.check_password(current):
+            flash('Current password is incorrect.', 'danger')
+        elif len(new) < 6:
+            flash('New password must be at least 6 characters.', 'danger')
+        elif new != confirm:
+            flash('New passwords do not match.', 'danger')
+        else:
+            current_user.set_password(new)
+            db.session.commit()
+            flash('Password updated successfully.', 'success')
+            return redirect(url_for('main.index'))
+
+    return render_template('auth/change_password.html')
+
+
 @bp.route('/logout')
 @login_required
 def logout():

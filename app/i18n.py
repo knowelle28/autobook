@@ -166,6 +166,13 @@ TRANSLATIONS = {
         'cal_detail_status': 'Status',
         'cal_detail_notes': 'Notes',
         'cal_close': 'Close',
+        # Change Password
+        'nav_change_password': 'Change Password',
+        'chpwd_title': 'Change Password',
+        'chpwd_current': 'Current Password',
+        'chpwd_new': 'New Password',
+        'chpwd_confirm': 'Confirm New Password',
+        'chpwd_submit': 'Update Password',
         # Common
         'min': 'min',
     },
@@ -336,6 +343,13 @@ TRANSLATIONS = {
         'cal_detail_status': '\u0627\u0644\u062d\u0627\u0644\u0629',
         'cal_detail_notes': '\u0645\u0644\u0627\u062d\u0638\u0627\u062a',
         'cal_close': '\u0625\u063a\u0644\u0627\u0642',
+        # Change Password
+        'nav_change_password': '\u062a\u063a\u064a\u064a\u0631 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631',
+        'chpwd_title': '\u062a\u063a\u064a\u064a\u0631 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631',
+        'chpwd_current': '\u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631 \u0627\u0644\u062d\u0627\u0644\u064a\u0629',
+        'chpwd_new': '\u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631 \u0627\u0644\u062c\u062f\u064a\u062f\u0629',
+        'chpwd_confirm': '\u062a\u0623\u0643\u064a\u062f \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631 \u0627\u0644\u062c\u062f\u064a\u062f\u0629',
+        'chpwd_submit': '\u062a\u062d\u062f\u064a\u062b \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631',
         # Common
         'min': '\u062f\u0642\u064a\u0642\u0629',
     },
